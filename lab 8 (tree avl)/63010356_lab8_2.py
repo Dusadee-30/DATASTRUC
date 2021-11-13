@@ -1,71 +1,88 @@
 class TreeNode(object): 
     def __init__(self, val): 
-        self.value = val 
+        self.val = val 
         self.left = None
         self.right = None
         self.height = 1
 
     def __str__(self):
-        return str(self.value)
+        return str(self.val)
+  
+class AVL_Tree(object): 
 
-class AVLTree:
+    def __init__(self):
+        self.root = None
 
-    def height(self, Node):
-        if Node is None:
+    def leftRotate(self, z):
+ 
+        y = z.right
+        x = y.left
+        # Rotate
+        y.left = z
+        z.right = x
+        # Update heights
+        z.height = 1 + max(self.getHeight(z.left),self.getHeight(z.right))
+        y.height = 1 + max(self.getHeight(y.left),self.getHeight(y.right))
+        return y
+ 
+    def rightRotate(self, z):
+ 
+        y = z.left
+        x = y.right
+        # Rotate
+        y.right = z
+        z.left = x
+        # Update heights
+        z.height = 1 + max(self.getHeight(z.left),self.getHeight(z.right))
+        y.height = 1 + max(self.getHeight(y.left),self.getHeight(y.right))
+        return y
+
+    def getHeight(self, root):
+        if not root:
             return 0
-        else:
-            return Node.height
-
-    def balance(self, Node):
-        if Node is None:
+        return root.height
+ 
+    def getBalance(self, root): #return -1 if right>left return 1 if right<left return 0 if balance 
+        if not root:
             return 0
+        return self.getHeight(root.left) - self.getHeight(root.right)
+
+
+    def insert(self,root,data):
+        #BST Recursion
+        if not root: #insert
+            return TreeNode(data)
+
+        elif int(data) < int(root.val):
+            root.left = self.insert(root.left, data)
         else:
-            return self.height(Node.left) - self.height(Node.right)
+            root.right = self.insert(root.right, data)
 
-    def MinimumValueNode(self, Node):
-        if Node is None or Node.left is None:
-            return Node
-        else:
-            return self.MinimumValueNode(Node.left)
+        #Height update (every node in recursion)
+        root.height = 1 + max(self.getHeight(root.left),self.getHeight(root.right))
 
-    def rotateR(self, Node):
-        a = Node.left
-        b = a.right
-        a.right = Node
-        Node.left = b
-        Node.height = 1 + max(self.height(Node.left), self.height(Node.right))
-        a.height = 1 + max(self.height(a.left), self.height(a.right))
-        return a
+        balance = self.getBalance(root)
 
-    def rotateL(self, Node):
-        a = Node.right
-        b = a.left
-        a.left = Node
-        Node.right = b
-        Node.height = 1 + max(self.height(Node.left), self.height(Node.right))
-        a.height = 1 + max(self.height(a.left), self.height(a.right))
-        return a
+        if balance > 1 and int(data) < int(root.left.val):
+            print("Not Balance, Rebalance!")
+            return self.rightRotate(root)
+ 
+        if balance < -1 and int(data) > int(root.right.val):
+            print("Not Balance, Rebalance!")
+            return self.leftRotate(root)
 
-    def insert(self, root, val):
-        if root is None:
-            return TreeNode(val)
-        elif val <= root.value:
-            root.left = self.insert( root.left,val)
-        elif val > root.value:
-            root.right = self.insert( root.right,val)
-        root.height = 1 + max(self.height(root.left), self.height(root.right))
-        balance = self.balance(root)
-        if balance > 1 and root.left.value > val:
-            return self.rotateR(root)
-        if balance < -1 and val > root.right.value:
-            return self.rotateL(root)
-        if balance > 1 and val > root.left.value:
-            root.left = self.rotateL(root.left)
-            return self.rotateR(root)
-        if balance < -1 and val < root.right.value:
-            root.right = self.rotateR(root.right)
-            return self.rotateL(root)
+        if balance > 1 and int(data) > int(root.left.val):
+            print("Not Balance, Rebalance!")
+            root.left = self.leftRotate(root.left)
+            return self.rightRotate(root)
+ 
+        if balance < -1 and int(data) < int(root.right.val):
+            print("Not Balance, Rebalance!")
+            root.right = self.rightRotate(root.right)
+            return self.leftRotate(root)
+
         return root
+
 
 def printTree90(node, level = 0):
     if node != None:
@@ -73,7 +90,7 @@ def printTree90(node, level = 0):
         print('     ' * level, node)
         printTree90(node.left, level + 1)
   
-myTree = AVLTree() 
+myTree = AVL_Tree() 
 root = None
 
 data = input("Enter Input : ").split()
