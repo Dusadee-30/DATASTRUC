@@ -1,5 +1,5 @@
 class Data:
-    def __init__(self, key, value):     # like a dict() with homemade class
+    def __init__(self, key, value):    
         self.key = key
         self.value = value
 
@@ -9,55 +9,55 @@ class Data:
 
 class hash:
     def __init__(self, size, maxCol):
-        self.lst = [None] * size        # lst of None (table size)
-        self.maxCol = maxCol            # maxCollision
-        self.tableSize = size           # table size
-        self.realSize = 0               # init size (0)
+        self.lst = [None] * size        
+        self.maxCol = maxCol            
+        self.tableSize = size         
+        self.realSize = 0               
 
     def printTable(self):
-        for i in range(self.tableSize):         # print table size
+        for i in range(self.tableSize):         
             print(f'#{i+1}\t{self.lst[i]}')
         print('---------------------------')
 
     def insert(self, key, value):
         if self.realSize == self.tableSize:
-            return False                    # table is full / cannot insert
+            return False                   
 
-        newData = Data(key, value)          # assign newData
+        newData = Data(key, value)          
         sum = 0
         for i in key:
             sum += ord(i)
-        indexFirst = sum % self.tableSize   # find first index
+        indexFirst = sum % self.tableSize   
 
         for n in range(self.maxCol):
-            index = (indexFirst + n**2) % self.tableSize        # quadratic Probing +0 +1 +4 +9 ... n^2
+            index = (indexFirst + n**2) % self.tableSize        
 
             if self.lst[index] is not None:
-                print(f'collision number {n+1} at {index}')     # collision with something...
+                print(f'collision number {n+1} at {index}')     
             else:
-                self.lst[index] = newData           # assign newData to table[index]
-                self.realSize += 1                  # realSize++
-                break                               # break out if already assign...
+                self.lst[index] = newData           
+                self.realSize += 1                 
+                break                              
         else:
-            print('Max of collisionChain')          # Max Collision
+            print('Max of collisionChain')          
 
-        return True     # can insert
+        return True     
 
-# 3 2/1+1 I,OnE Love,abcde I,#$ew2 KMITL,kk KMITL,z Love
+
 
 print(' ***** Fun with hashing *****')
 inp = input('Enter Input : ').split('/')
-tableSize, maxColis = map(int, inp[0].split())
+ts, max = map(int, inp[0].split())
 lst = inp[1].split(',')
 
-hashTable = hash(tableSize, maxColis)
+hashTable = hash(ts, max)
 
 for i in lst:
     i = i.split()
-    canInsert = hashTable.insert(i[0], i[1])    # Insert .. and get can/cannot Insert
+    canInsert = hashTable.insert(i[0], i[1])    
 
-    if canInsert is True:                   # can insert .. print table
+    if canInsert is True:                   
         hashTable.printTable()
     else:
-        print('This table is full !!!!!!')  # cannot insert .. don't print table .. and break out!
+        print('This table is full !!!!!!') 
         break

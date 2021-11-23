@@ -1,19 +1,18 @@
-# thanks to Qirals, I'm fucking gave up
-# brute force
+
 def minimumWeight(lst, box):
-    if box == 1:    # base case
+    if box == 1:   
         return sum(lst)
 
-    minWeight = 99999  # init new min weight (infinity+++)
-    for index in range(len(lst)):   # loop all index // find all possible way to push in the box...
+    minWeight = 99999  
+    for index in range(len(lst)):   
 
-        if len(lst[index:]) < box-1:    # if len of goods less than all box
+        if len(lst[index:]) < box-1:   
             break
 
-        leftValue = sum(lst[:index])    # [,i) # sum of my box (left side)
-        rightValue = minimumWeight(lst[index:], box - 1)  # [i,) # recursive go to next box (right side)
+        leftValue = sum(lst[:index])    
+        rightValue = minimumWeight(lst[index:], box - 1)  
 
-        minWeight = min(max(leftValue, rightValue), minWeight)  # find lowest of sum of every set of box
+        minWeight = min(max(leftValue, rightValue), minWeight)  
 
     return minWeight
 

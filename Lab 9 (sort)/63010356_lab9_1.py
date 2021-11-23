@@ -1,20 +1,17 @@
-def maxIndex( a , index , n ):
-    if index == n:
-        return index 
-    k = maxIndex(a, index + 1, n)   
-    return (index if int(a[index]) < int(a[k]) else k)
- 
-def sort(lst, n, index = 0):
- 
-    if index == n:
-        return -1    
-    k = maxIndex(lst, index, n-1)  
-    if k != index:
-        lst[k], lst[index] = int(lst[index]), int(lst[k])
-    else:
-        lst[index] = int(lst[index])  
-    sort(lst, n, index + 1)
+def bubble_sort(list):
+    last = len(list)-1
+    swaped = True
+    while last >= 1:
+        swaped = False
+        i = 0
+        while(i < last):
+            if list[i] > list[i+1]:
+                list[i],list[i+1] = list[i+1],list[i]
+                swaped = True
+            i+=1
+        if not swaped:
+            break
 
-Input_lst = input('Enter Input : ').split(' ')
-sort(Input_lst,len(Input_lst))
+Input_lst = [int(i) for i in input('Enter Input : ').split(' ') ]
+bubble_sort(Input_lst)
 print(Input_lst)

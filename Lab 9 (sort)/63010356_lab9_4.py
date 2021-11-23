@@ -44,7 +44,7 @@ def output(l,index,lst=[],output_lst=[]):
 
 l = [e for e in input("Enter Input : ").split()]
 if l[0] == 'EX':
-    Ans = "insertion sort"
+    Ans = "minHeap and maxHeap"
     print("Extra Question : What is a suitable sort algorithm?")
     print("   Your Answer : "+Ans)
 else:
